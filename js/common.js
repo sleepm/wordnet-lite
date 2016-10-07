@@ -38,6 +38,16 @@
         }
         window.scroll(0,0);
     };
+    var copyright = function () {
+        var div = document.createElement('div'),
+            a = document.createElement('a');
+        div.setAttribute('style', 'text-align:center;margin:10px;');
+        a.href="http://wordnet.princeton.edu/";
+        a.textContent='wordnet';
+        div.textContent = 'data from ';
+        div.appendChild(a);
+        return div;
+    };
     var show = function (json) {
         if($('.results')!=undefined){
             document.body.removeChild($('.results'));
@@ -106,6 +116,7 @@
             results.appendChild(result);
             $('body').appendChild(results);
         }
+        $('.results').appendChild(copyright());
     };
     var toType = function(type){
         var result = type=='a'?'adj.':
@@ -125,4 +136,9 @@
         $('.center').style['margin-top']='15px';
         isCached();
     };
+    document.addEventListener("keydown",function(e){
+        if(e.keyCode==13)
+           isCached();
+    }
+    );
 })();
