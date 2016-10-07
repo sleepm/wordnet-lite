@@ -11,7 +11,7 @@ require('config.php');
 </head>
 <body>
     <div class="search center">
-        <input class="word" type="text" name="word" id="" value="book"><input type="button" value="search" class="search-btn">
+        <input class="word" type="text" name="word" id="" value=""><input type="button" value="search" class="search-btn">
     </div>
     <style>
         html, body{
