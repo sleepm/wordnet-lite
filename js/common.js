@@ -1,4 +1,5 @@
 (function () {
+    'use strict';
     var $ = function (ele) {
             return document.querySelector(ele);
     },
@@ -14,7 +15,7 @@
                     $('.mask').setAttribute('style','display: none;');
                     historyState(json);
                 }
-            }
+            };
             ajax.send();
     };
     $('.search-btn').onclick = function (e) {
@@ -31,8 +32,8 @@
         $('.center').style['position']='static';
         $('.center').style['margin-top']='15px';
         if(localStorage.getItem($('input.word').value.toLowerCase().replace(/ /g, '_'))){
-            var json = localStorage.getItem($('input.word').value.toLowerCase().replace(/ /g, '_'));
-            historyState(JSON.parse(json));
+            var itemKey = localStorage.getItem($('input.word').value.toLowerCase().replace(/ /g, '_'));
+            historyState(JSON.parse(itemKey));
         }else{
             getJSON(api_url + $('input.word').value.replace(/ /g,'_'));
         }
@@ -53,14 +54,14 @@
             document.body.removeChild($('.results'));
         }
         if(json.msg=='not found'){
-            var result = document.createElement('div'),
+            var div = document.createElement('div'),
                 p = document.createElement('p');
             p.setAttribute('class', 'center');
             p.textContent='sorry, i can\'t find it';
-            p.setAttribute('style', 'text-align:center;line-height:30px');
-            result.setAttribute('class', 'results');
-            result.appendChild(p);
-            document.body.appendChild(result);
+            p.setAttribute('style', 'text-align:center;line-height:30px;margin-top:10px');
+            div.setAttribute('class', 'results');
+            div.appendChild(p);
+            document.body.appendChild(div);
         }
         var lemma = json.lemma.replace(/_/g, ' ');
         document.title = 'wordnet: ' + lemma;
@@ -75,11 +76,11 @@
             definitionEle.textContent = 'Definition: ' + words[i].definition;
             var sentence = words[i].sentence;
             if(sentence!=null){
-                sentenceEle = document.createElement('div');
+                var sentenceEle = document.createElement('div');
                 sentenceEle.setAttribute('class', 'sentence');
                 sentenceEle.innerHTML = 'Sentence: <br>' + sentence.join(';<br>');    
             }else{
-                sentenceEle = '';
+                var sentenceEle = '';
             }
             var synonyms = document.createElement('div'),
                 br = document.createElement('br'),
@@ -89,18 +90,18 @@
             synonyms.appendChild(typeEle);
             for(var j=0,wordsLength=word.length;j<wordsLength;j++){
                 var oneWord = word[j][0].replace(/_/g, ' ').replace(/\([aip]\)/, '');
-                var s = document.createElement('span');
-                s.setAttribute('class', 'word');
                 if(oneWord.toLowerCase()==lemma.toLowerCase()){
-                    s.textContent = oneWord;
-                    synonyms.appendChild(s);
+                    var span = document.createElement('span');
+                    span.setAttribute('class', 'word');
+                    span.textContent = oneWord;
+                    synonyms.appendChild(span);
                 }else{
                     var a = document.createElement('a');
                     var wrap = document.createElement('span');
                     wrap.setAttribute('class', 'word');
                     a.setAttribute('href', 'word/'+oneWord);
                     a.setAttribute('data-url', word[j][0]);
-                    a.text = oneWord;
+                    a.textContent = oneWord;
                     a.onclick = function (e) {
                         $('input.word').value = e.target.innerText;
                         e.preventDefault();
@@ -130,13 +131,12 @@
         $('input.word').value=e.state.lemma.replace(/_/g, ' ');
         show(e.state);
     };
-    if(decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'')!='/wordnet-lite/'){
-        $('input.word').value=decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'');
+    if(decodeURIComponent(location.pathname).replace(/\/wordnet\/word\//,'')!='/wordnet/'){
+        $('input.word').value=decodeURIComponent(location.pathname).replace(/\/wordnet\/word\//,'');
         isCached();
     };
     document.addEventListener("keydown",function(e){
         if(e.keyCode==13)
            isCached();
-    }
-    );
+    });
 })();
