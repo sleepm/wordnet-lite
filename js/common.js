@@ -18,8 +18,6 @@
             ajax.send();
     };
     $('.search-btn').onclick = function (e) {
-        $('.center').style['position']='static';
-        $('.center').style['margin-top']='15px';
         e.preventDefault();
         isCached();
     };
@@ -30,6 +28,8 @@
         show(json);
     };
     var isCached = function () {
+        $('.center').style['position']='static';
+        $('.center').style['margin-top']='15px';
         if(localStorage.getItem($('input.word').value.toLowerCase().replace(/ /g, '_'))){
             var json = localStorage.getItem($('input.word').value.toLowerCase().replace(/ /g, '_'));
             historyState(JSON.parse(json));
@@ -132,8 +132,6 @@
     };
     if(decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'')!='/wordnet-lite/'){
         $('input.word').value=decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'');
-        $('.center').style['position']='static';
-        $('.center').style['margin-top']='15px';
         isCached();
     };
     document.addEventListener("keydown",function(e){
