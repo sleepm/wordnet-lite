@@ -131,8 +131,8 @@
         $('input.word').value=e.state.lemma.replace(/_/g, ' ');
         show(e.state);
     };
-    if(decodeURIComponent(location.pathname).replace(/\/wordnet\/word\//,'')!='/wordnet/'){
-        $('input.word').value=decodeURIComponent(location.pathname).replace(/\/wordnet\/word\//,'');
+    if(decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'')!='/wordnet-lite/'){
+        $('input.word').value=decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'');
         isCached();
     };
     document.addEventListener("keydown",function(e){
