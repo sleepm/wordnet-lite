@@ -119,8 +119,8 @@
         $('input.word').value=e.state.lemma.replace(/_/g, ' ');
         show(e.state);
     };
-    if(decodeURIComponent(location.pathname).replace(/\/wn\/word\//,'')!='/wn/'){
-        $('input.word').value=decodeURIComponent(location.pathname).replace(/\/wn\/word\//,'');
+    if(decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'')!='/wordnet-lite/'){
+        $('input.word').value=decodeURIComponent(location.pathname).replace(/\/wordnet-lite\/word\//,'');
         $('.center').style['position']='static';
         $('.center').style['margin-top']='15px';
         isCached();
