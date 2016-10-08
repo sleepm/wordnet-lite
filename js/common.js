@@ -62,6 +62,7 @@
             div.setAttribute('class', 'results');
             div.appendChild(p);
             document.body.appendChild(div);
+            return ;
         }
         var lemma = json.lemma.replace(/_/g, ' ');
         document.title = 'wordnet: ' + lemma;
