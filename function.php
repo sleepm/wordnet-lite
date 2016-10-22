@@ -12,12 +12,12 @@ function word($lemma)
     $queryLemma->execute();
     $lemmaResults = $queryLemma->fetchAll(PDO::FETCH_OBJ);
     $countLemma = count($lemmaResults);
-    $emptyObj = new stdClass;
-    $emptyObj->lemma = $lemma;
+    $results = new stdClass;
+    $results->lemma = $lemma;
     if($countLemma==0){
-        $emptyObj->msg = 'not found';
+        $results->msg = 'not found';
     }else{
-        $emptyObj->msg = 'success';
+        $results->msg = 'success';
         for($i=0;$i<$countLemma;$i++){
             $offset = $lemmaResults[$i]->offset;
             $offset = json_decode($offset);
@@ -27,31 +27,48 @@ function word($lemma)
                 $queryWord = $sqlResources->query("select `ss_type`, `word`, `definition`, `sentence` from `data` where offset = \"$offset[$j]\"");
                 $wordResults = $queryWord->fetchAll(PDO::FETCH_OBJ);
                 $word = oneWord($wordResults, $pos);
-                $emptyObj->words[] = $word;
+                $results->words[] = $word;
             }
         }
     }
-    return json_encode($emptyObj);
+    return json_encode($results);
 }
 
 function oneWord($results, $pos)
 {
-    $emptyObj = new stdClass;
+    $result = new stdClass;
     $countWord = count($results);
     if($countWord==1){
-        $emptyObj->type = $results[0]->ss_type;
-        $emptyObj->word = json_decode($results[0]->word);
-        $emptyObj->definition = json_decode($results[0]->definition);
-        $emptyObj->sentence = json_decode($results[0]->sentence);
+        $result->type = $results[0]->ss_type;
+        $result->word = json_decode($results[0]->word);
+        $result->definition = json_decode($results[0]->definition);
+        $result->sentence = json_decode($results[0]->sentence);
     }else{
         for($i=0;$i<$countWord;$i++){
             if($results[$i]->ss_type===$pos){
-                $emptyObj->type = $pos;
-                $emptyObj->word = json_decode($results[$i]->word);
-                $emptyObj->definition = json_decode($results[$i]->definition);
-                $emptyObj->sentence = json_decode($results[$i]->sentence);
+                $result->type = $pos;
+                $result->word = json_decode($results[$i]->word);
+                $result->definition = json_decode($results[$i]->definition);
+                $result->sentence = json_decode($results[$i]->sentence);
             }
         }
     }
-    return $emptyObj;
+    return $result;
+}
+
+function wordList($length)
+{
+    global $sqlResources;
+    $queryList =$sqlResources->prepare("select distinct lemma from `index` where length(lemma)=$length");
+    $queryList->execute();
+    $listResults = $queryList->fetchAll(PDO::FETCH_OBJ);
+    $results = new stdClass;
+    $results->length = $length;
+    $results->msg = (count($listResults)==0)?'not found':'success';
+    $listLength = count($listResults);
+    for($i=0;$i<$listLength;$i++){
+        $results->lemmas[] = $listResults[$i]->lemma;
+    }
+    $results->total = $listLength;
+    return json_encode($results);
 }
