@@ -10,7 +10,7 @@ require('config.php');
     <title>wordnet lite</title>
 </head>
 <body>
-    <div class="search center">
+    <div class="search">
         <input class="word" type="text" placeholder="type something u want"><input type="button" value="search" class="search-btn">
     </div>
     <div class="cards">
