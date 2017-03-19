@@ -38,12 +38,10 @@ window, document, event, history, location, localStorage, navigator, setTimeout,
         if (type === 1) {
             var lemma = json.lemma.replace(/_/g, " ");
             history.pushState(json, "", "word/" + lemma);
-            history.replaceState(json, "", "word/" + lemma);
             show.word(json);
         } else if (type === 2) {
             var page = localStorage.getItem("$page");
             history.pushState(json, "", "length/" + json.length + "/page/" + page);
-            history.replaceState(json, "", "length/" + json.length + "/page/" + page);
             show.list(json, page);
         }
     };
